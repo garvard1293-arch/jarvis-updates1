@@ -1,0 +1,15 @@
+name: JARVIS Windows Check
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  check:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m py_compile jarvis-win11/jarvis_app.py jarvis-win11/studio.py jarvis-win11/updater.py
