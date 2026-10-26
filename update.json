@@ -1,0 +1,6 @@
+{
+  "version": "1.1.0",
+  "notes": "Добавлена проверка обновлений, резервная копия, очистка смайликов перед озвучкой и ускоренные короткие ответы.",
+  "download_url": "https://github.com/garvard1293-arch/jarvis-updates1/releases/download/v1.1.0/JARVIS.zip",
+  "sha256": "58843e0c06b734e61bb6c666a7334e945b2d2671984ddabfa83b94b5fe082ead"
+}
