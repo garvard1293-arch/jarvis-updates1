@@ -1,0 +1,6 @@
+PySide6>=6.7,<7
+requests>=2.32,<3
+vosk>=0.3.45,<0.4
+sounddevice>=0.5,<1
+pyttsx3>=2.90,<3
+keyring>=25,<27
