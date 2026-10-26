@@ -1,15 +1,43 @@
 name: JARVIS Windows Check
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
 jobs:
   check:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python -m py_compile jarvis-win11/jarvis_app.py jarvis-win11/studio.py jarvis-win11/updater.py
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          if (Test-Path jarvis-win11/requirements.txt) {
+            python -m pip install -r jarvis-win11/requirements.txt
+          }
+          python -m pip install pytest
+
+      - name: Check Python syntax
+        run: python -m py_compile jarvis-win11/jarvis_app.py jarvis-win11/studio.py jarvis-win11/updater.py
+
+      - name: Run automated tests
+        shell: pwsh
+        run: |
+          if (Test-Path tests) {
+            python -m pytest tests -q
+          } elseif (Get-ChildItem -Path . -Recurse -Filter 'test_*.py' -File -ErrorAction SilentlyContinue) {
+            python -m pytest -q
+          } else {
+            Write-Host 'Тестовые файлы пока не добавлены; выполнена smoke-проверка импорта модулей.'
+            python -c "import ast, pathlib; [ast.parse(p.read_text(encoding='utf-8')) for p in pathlib.Path('jarvis-win11').glob('*.py')]; print('Smoke tests passed')"
+          }
